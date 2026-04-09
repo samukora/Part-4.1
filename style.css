@@ -1,0 +1,80 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  padding: 20px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+.autocomplete {
+  position: relative;
+  padding-bottom: 10px;
+  width: 200px;
+}
+
+.autocomplete_field{ 
+  width: 100%;
+}
+.repositories_list {
+  background-color: #fff;
+  padding: 2px;
+  position: absolute;
+  border: 1px #111 solid;
+  width: 100%;
+}
+
+.repositories_list li {
+  padding: 2px;
+  list-style-type: none;
+}
+
+.repositories_list li:hover {
+  background-color: #eee;
+}
+
+.repositories_list li:active {
+  background-color: #d4d3d3;
+}
+
+.repositories_list li:focus {
+  background-color: #086161;
+}
+
+.selected_list ul {
+  display: flex;
+  flex-direction: column;
+  border-collapse: collapse;
+  width: 40%;
+}
+
+.selected_list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style-type: none;
+  border: 1px solid #111;
+  margin-top: -1px;
+}
+
+ .selected_list img {
+  width: 40px;
+  height: 40px;
+ }
+.selected_list li p{
+  padding: 0px;
+  margin: 0px;
+}
