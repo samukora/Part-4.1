@@ -9,16 +9,15 @@ const api = new Api("https://api.github.com", {
 });
 
 const listResuts = new List();
-const selectedListElement = document.querySelector("#list");
 
 const autocomplete = new Autocomplete(api, "search/repositories", {
   onSelect: (event) => {
     listResuts.addItem(autocomplete.getInfoByID(event.target.value));
     autocomplete.clearField();
-    selectedListElement.replaceChildren(listResuts.showList());
   },
 });
 const autocompleteElement = document.querySelector("#autocomplete");
 autocompleteElement.replaceChildren(autocomplete.getElement());
 
-
+const selectedListElement = document.querySelector("#list");
+selectedListElement.replaceChildren(listResuts.getElement());
