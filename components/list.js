@@ -8,27 +8,18 @@ export class List {
 
   addItem(elem) {
     if (this.list.find((item) => item.id == elem.id)) return;
-    
+
     this.list.push(elem);
-    this.buildListElement();
+    this.listElement.append(this.createCard(elem));
   }
 
-  removeItem(id) {
-    this.list = this.list.filter((elem) => elem.id != id);
-    this.buildListElement();
-  }
-
-  buildListElement() {
-    const fragment = document.createDocumentFragment();
-    this.list.forEach((elem) => {
-      fragment.appendChild(this.createCard(elem));
-    });
-    this.listElement.replaceChildren(fragment);
+  removeItem(elem) {
+    this.list = this.list.filter((item) => item.id != elem.id);
+    elem.remove();
   }
 
   createCard(elem) {
     const liElement = document.createElement("li");
-    liElement.setAttribute("id", elem.id);
     liElement.appendChild(this.createInfoBlock(elem));
     liElement.appendChild(this.createDeleteBlock());
     return liElement;
@@ -39,9 +30,9 @@ export class List {
     liItemElement.classList.add("card_info");
     liItemElement.insertAdjacentHTML(
       "afterbegin",
-      `<p>Name: ${elem.name}<p>
-      <p>Owner: ${elem.owner.login}<p>
-      <p>Stars: ${elem.stargazers_count}<p>`,
+      `<p>Name: ${elem.name}</p>
+      <p>Owner: ${elem.owner.login}</p>
+      <p>Stars: ${elem.stargazers_count}</p>`,
     );
     return liItemElement;
   }
@@ -54,7 +45,7 @@ export class List {
     );
     liButtonElement.classList.add("card_actions");
     liButtonElement.addEventListener("click", (event) => {
-      this.removeItem(event.target.closest("li").id);
+      this.removeItem(event.target.closest("li"));
     });
 
     return liButtonElement;

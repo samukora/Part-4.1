@@ -8,48 +8,44 @@ export class Autocomplete {
   selectElement;
   optionsListElement;
 
-  constructor(api, uri, actions) {
+  constructor(api, urn, actions) {
     this.actions = actions;
 
     this.inputElement = document.createElement("input");
     this.inputElement.classList.add("autocomplete_field");
     this.inputElement.addEventListener(
-      "keyup",
+      "keydown",
       debounce(async (event) => {
         if (event.target.value === "") {
           this.clearList();
           return;
         }
-        const uriString = `${uri}?q=${this.inputElement.value}+in:name&per_page=5`;
-        const listData = await api.getData(uriString);
+        const urnFull = `${urn}?q=${encodeURIComponent(this.inputElement.value)}+in:name&per_page=5`;
+        const listData = await api.getData(urnFull);
         if (!listData) return;
 
         this.setList(listData.items);
         this.creteOptions();
         this.showOptions();
-      }, 300),
+      }, 200),
     );
-    this.inputElement.addEventListener("keyup", (event) => {
+
+    this.inputElement.addEventListener("keydown", (event) => {
       if (event.key === "ArrowDown") this.showOptions();
     });
 
     this.selectElement = document.createElement("select");
-    this.selectElement.setAttribute("name", "select");
-    this.selectElement.setAttribute("aria-hidden", "true");
-    this.selectElement.setAttribute("class", "visually-hidden");
+    this.selectElement.classList.add("visually-hidden");
     this.selectElement.setAttribute("tabindex", "-1");
 
     this.optionsListElement = document.createElement("ul");
-    this.optionsListElement.setAttribute("id", "optionsList");
-    this.optionsListElement.classList.add("repositories_list");
-    this.optionsListElement.classList.add("visually-hidden");
+    this.optionsListElement.id = "optionsList";
+    this.optionsListElement.classList.add("repositories_list", "visually-hidden");
   }
 
   getElement() {
     const fragment = document.createDocumentFragment();
-    fragment.appendChild(this.inputElement);
-    fragment.appendChild(this.selectElement);
-    fragment.appendChild(this.optionsListElement);
+    fragment.append(this.inputElement, this.selectElement, this.optionsListElement);
     return fragment;
   }
 
@@ -65,7 +61,7 @@ export class Autocomplete {
       optionElement.setAttribute("value", elem.id);
       optionElement.textContent = `${elem.name}`;
       optionElement.addEventListener("click", this.actions.onSelect);
-      fragment.appendChild(optionElement);
+      fragment.append(optionElement);
     });
     this.optionsListElement.replaceChildren(fragment);
   }

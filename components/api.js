@@ -12,9 +12,10 @@ export class Api {
     };
   }
 
-  async getData(uri) {
+  async getData(urn) {
     try {
-      const result = await fetch(`${this.baseURL}/${uri}`);
+      const uri = new URL(urn, this.baseURL);
+      const result = await fetch(uri);
       if (result.ok) return result.json();
     } catch (err) {
       console.log("Не удалось получить данные: ", err);
